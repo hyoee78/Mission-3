@@ -1,0 +1,30 @@
+name: Run Tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.10", "3.11", "3.12"]
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Run unittests
+      run: |
+        python -m unittest -v
+    - name: Run main script mode 2
+      run: |
+        python main.py --mode 2
+    - name: Run main script bonus
+      run: |
+        python main.py --mode 3
